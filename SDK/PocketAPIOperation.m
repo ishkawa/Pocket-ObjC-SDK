@@ -404,7 +404,10 @@ NSString *PocketAPINameForHTTPMethod(PocketAPIHTTPMethod method){
 -(NSString *)pkt_URLEncodedFormString{
 	NSMutableArray *formPieces = [NSMutableArray arrayWithCapacity:self.allKeys.count];
 	for(NSString *key in self.allKeys){
-		NSString *value = [self objectForKey:key];
+		id value = [self objectForKey:key];
+		if ([value isKindOfClass:[NSNumber class]]) {
+			value = [value stringValue];
+		}
 		[formPieces addObject:[NSString stringWithFormat:@"%@=%@", [PocketAPIOperation encodeForURL:key], [PocketAPIOperation encodeForURL:value]]];
 	}
 	return [formPieces componentsJoinedByString:@"&"];
